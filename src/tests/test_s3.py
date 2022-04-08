@@ -9,4 +9,4 @@ from utils.path_utils import source_path
 # test download file
 
 if __name__ == '__main__':
-    s3_utils.upload_file(source_path() + '/data/testfile.csv', 'equitypricehistory', 'test_data')
+    s3_utils.upload_file(source_path() + '/test_data/testfile.csv', 'equitypricehistory', 'test_data')
