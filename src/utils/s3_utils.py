@@ -3,7 +3,7 @@ import boto3
 
 s3 = boto3.resource('s3')
 
-def upload_file(path_to_file: str, bucket_name: str, destination_directory_name=None) -> None:
+def upload_file(path_to_file: str, bucket_name: str, destination_directory_name=None):
 
     filename = path_to_file.split('/')[-1]
 
