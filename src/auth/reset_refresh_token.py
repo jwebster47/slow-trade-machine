@@ -1,8 +1,8 @@
-import datetime
 import os
-from utils import auth_utils
+import datetime
 from dateutil import parser
-from utils.auth_utils import load_dotenv_globals
+from utils import auth_utils
+from utils.dotenv_utils import load_dotenv_globals
 
 # TODO add logging
 
@@ -12,8 +12,12 @@ def reset():
     last_token_generation_date = parser.parse(os.environ['REFRESH_TOKEN_LAST_GENERATED'])
     date_delta_in_days = (current_date - last_token_generation_date).days
 
-    if date_delta_in_days > 75:
-        auth_utils.reset_refresh_token()
+    # if date_delta_in_days > 75:
+    #     auth_utils.reset_refresh_token()
+    
+    # change to this when finished
+
+    auth_utils.reset_refresh_token()
 
 
 if __name__ == '__main__':
