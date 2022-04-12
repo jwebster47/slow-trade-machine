@@ -6,6 +6,7 @@ from datetime import datetime
 import pandas as pd
 from utils.dotenv_utils import load_dotenv_globals
 
+
 _ = load_dotenv_globals()
 
 
