@@ -33,6 +33,7 @@ def reset_refresh_token():
 
 
 def reset_access_token(refresh_token):
+    
     # runs before every trade event
     request_body = {
         'grant_type': 'refresh_token',
