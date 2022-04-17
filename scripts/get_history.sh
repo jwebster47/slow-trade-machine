@@ -2,4 +2,4 @@
 
 cd "$(find $HOME -name 'slow-trade-machine')"
 source venv/bin/activate
-python src/auth/reset_refresh_token.py
+python src/upload_data.py

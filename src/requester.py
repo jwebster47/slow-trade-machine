@@ -10,10 +10,19 @@ from utils.dotenv_utils import load_dotenv_globals
 _ = load_dotenv_globals()
 
 
-class Requester():
+class Requester:
 
-    def __init__(self, ticker_list, period_type='day', period=1, frequency_type='minute',
-                frequency=1, extended_hours='false', df='false'):
+    def __init__(
+
+        self,
+        ticker_list: list,
+        period_type='day',
+        period=1,
+        frequency_type='minute',
+        frequency=1,
+        extended_hours='false',
+
+    ):
 
         self.apikey = os.environ['TD_AMERITRADE_CLIENT_ID']
         self.ticker_list = ticker_list
@@ -22,19 +31,19 @@ class Requester():
         self.frequency_type = frequency_type
         self.frequency = frequency
         self.extended_hours = extended_hours
-        self.dataframe = (False if df.lower() not in ['t', 'true', 'y', 'yes', '1'] else True)
-        self.data = self.save_response_data
+        self.data = self.response_data
         
     @property
-    def save_response_data(self):
+    def response_data(self):
         
         response_data_dict = {}
         for ticker in self.ticker_list:
             url = self.get_request_url(ticker)
             response = self.make_request(url)
             response_data = self.parse_response_data(response)
-            data = (response_data if not self.dataframe else self.response_as_df(response_data))
-            response_data_dict[ticker] = data
+            if len(response_data) > 0:
+                data = self.response_as_df(response_data)
+                response_data_dict[ticker] = data
         
         return response_data_dict
     
