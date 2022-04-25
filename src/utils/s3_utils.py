@@ -13,7 +13,7 @@ bucket_name = os.environ['S3_BUCKET_NAME']
 
 def upload_file(path_to_file: str, destination_directory_name: str = None):
     """
-    Uploads existing file to s3 bucket
+    Uploads existing file to s3 bucket.
     """
 
     filename = path_to_file.split('/')[-1]
@@ -30,12 +30,17 @@ def upload_file(path_to_file: str, destination_directory_name: str = None):
         raise
 
 def upload_dict(history: dict, destination_directory_name: str = None):
+    """
+    Uploads a dictionary object.
+    Use a filename with no extension and a destination directory with no slash character.
+    """
     for key, df in history.items():
         append_df(df, key, destination_directory_name)
 
 def append_df(df: pd.DataFrame, filename: str, destination_directory_name: str = None):
     """
-    Use a filename with no extension and a destination directory with no slash character
+    Adds data to existing file or creates it.
+    Use a filename with no extension and a destination directory with no slash character.
     """
 
     if destination_directory_name is None:

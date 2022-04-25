@@ -5,4 +5,6 @@ bash scripts/setup.sh
 
 source venv/bin/activate
 
+Add to shell profile
+
 export PYTHONPATH=$PYTHONPATH:$PWD/src

@@ -56,8 +56,8 @@ class Requester:
         return f'https://api.tdameritrade.com/v1/marketdata/{ticker}/pricehistory?apikey={self.apikey}&periodType={self.period_type}' + \
                f'&period={self.period}&frequencyType={self.frequency_type}&frequency={self.frequency}&needExtendedHoursData={self.extended_hours}'
 
-    @ abstractmethod
-    def make_request(self, url: str):
+    @staticmethod
+    def make_request(url: str):
         
         response = requests.get(url)
 
@@ -66,15 +66,15 @@ class Requester:
         else:
             raise Exception(f'Invalid response code {response.status_code} from request.')
 
-    @abstractmethod
-    def parse_response_data(self, response: requests.Response):
+    @staticmethod
+    def parse_response_data(response: requests.Response):
 
         payload = json.loads(response.text)
 
         return payload['candles']
 
-    @abstractmethod
-    def response_as_df(self, response_data):
+    @staticmethod
+    def response_as_df(response_data):
 
         df = pd.DataFrame([i for i in response_data])
         df['datetime'] = [datetime.fromtimestamp(tstamp / 1000) for tstamp in df['datetime']]
