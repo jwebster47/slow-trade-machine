@@ -1,9 +1,6 @@
 import os
 import boto3
-import gzip
-import smart_open
 import pandas as pd
-from io import BytesIO
 from .dotenv_utils import load_dotenv_globals
 
 _ = load_dotenv_globals()
@@ -29,7 +26,7 @@ def upload_file(path_to_file: str, destination_directory_name: str = None):
     except Exception:
         raise
 
-def upload_dict(history: dict, destination_directory_name: str = None):
+def upload_dict(history: dict, destination_directory_name: str = None) -> None:
     """
     Uploads a dictionary object.
     Use a filename with no extension and a destination directory with no slash character.
@@ -46,21 +43,20 @@ def append_df(df: pd.DataFrame, filename: str, destination_directory_name: str =
     if destination_directory_name is None:
         destination_directory_name = str()
     
-    destination_directory_name += '/'
+    else:
+        destination_directory_name += '/'
 
     try:
-        df = pd.read_csv(f's3://{bucket_name}/{destination_directory_name}{filename}.csv.gz')
+        old_df = pd.read_csv(f's3://{bucket_name}/{destination_directory_name}{filename}.csv')
+        success = None
+        if not all(old_df == df):
+            new_df = pd.concat([old_df, df])
+            success = s3.Object(bucket_name, destination_directory_name + filename + '.csv').delete()['DeleteMarker']
+            if not success:
+                raise Exception('Failed to delete existing s3 object.')
+
+        if success:
+            new_df.to_csv(f's3://{bucket_name}/{destination_directory_name}{filename}.csv', index=False)
+
     except FileNotFoundError:
-        try:
-            buffer = BytesIO()
-            with gzip.open(buffer, mode="wt") as f:
-                df.to_csv(f, index=False)
-            s3.Bucket(bucket_name).put_object(Key=destination_directory_name + filename + '.csv.gz', Body=buffer.getvalue())
-        except:
-            raise
-
-    try:
-        df.to_csv(smart_open.open(f's3://{bucket_name}/{destination_directory_name}{filename}.csv.gz', 'w'), index=False)
-    except:
-        raise
-
+        df.to_csv(f's3://{bucket_name}/{destination_directory_name}{filename}.csv', index=False)

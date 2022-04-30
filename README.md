@@ -1,10 +1,17 @@
-Run the following commands in the shell at the top level of the repository:
+# Run the relevant commands at the top level of the repository:
 
 
-bash scripts/setup.sh
+### Setup script to install required packages and create virtual environment
 
-source venv/bin/activate
+    bash scripts/setup.sh
 
-Add to shell profile
+### Add project source to shell profile
 
-export PYTHONPATH=$PYTHONPATH:$PWD/src
+    export PYTHONPATH=$PYTHONPATH:$PWD/src
+
+### Activate virtual environment
+
+    source venv/bin/activate
+
+
+# This project uses python to pull equity price history, load it to an S3 bucket, make price forecasts, and execute trades based on a defined strategy
